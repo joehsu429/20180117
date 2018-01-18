@@ -10,18 +10,38 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+
+import com.example.student.myapplication.data.DBtype;
+import com.example.student.myapplication.data.StudentDAO;
+import com.example.student.myapplication.data.StudentDAOFactory;
+import com.example.student.myapplication.data.StudentFileDAO;
 import com.example.student.myapplication.data.StudentScoreDAO;
 import com.example.student.myapplication.data.student;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    final public static StudentScoreDAO dao = new StudentScoreDAO();
+    //public static StudentFileDAO dao;//0118af1
+    //final public static StudentScoreDAO dao;
+    public static StudentDAO dao;//0118af4
+    //int dbtype;//0118af4
+    DBtype dbtype;//af4-2
     ListView lv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dao = new StudentFileDAO(this);//0118af1
+        //dbtype= 1;//1.記憶體,2.檔案//0118af4
+        dbtype=DBtype.File;//af4-2
+//        switch(dbtype)//0118af4 一開始先寫這邊再貼到Factory去
+//        {
+//            case 1: dao=new StudentScoreDAO();
+//                break;
+//            case 2:dao=new StudentFileDAO(this);
+//                break;
+//        }
+        dao= StudentDAOFactory.getDAOInstance(this,dbtype);
     }
 
     @Override
