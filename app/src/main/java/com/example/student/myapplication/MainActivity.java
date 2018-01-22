@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dao = new StudentFileDAO(this);//0118af1
         //dbtype= 1;//1.記憶體,2.檔案//0118af4
-        dbtype=DBtype.File;//af4-2
+        //dbtype=DBtype.File;//af4-2
+        dbtype=DBtype.DB;//0122
 //        switch(dbtype)//0118af4 一開始先寫這邊再貼到Factory去
 //        {
 //            case 1: dao=new StudentScoreDAO();
