@@ -27,14 +27,17 @@ public class MainActivity extends AppCompatActivity {
     //int dbtype;//0118af4
     DBtype dbtype;//af4-2
     ListView lv;
+    ArrayList<String> studentNames;//0123
+    ArrayAdapter<String> adapter;//0123
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dao = new StudentFileDAO(this);//0118af1
+        //dao = new StudentFileDAO(this);//0118af1
         //dbtype= 1;//1.記憶體,2.檔案//0118af4
         //dbtype=DBtype.File;//af4-2
-        dbtype=DBtype.DB;//0122
+//        dbtype=DBtype.DB;//0122
+        dbtype=DBtype.CLOUD;//0123
 //        switch(dbtype)//0118af4 一開始先寫這邊再貼到Factory去
 //        {
 //            case 1: dao=new StudentScoreDAO();
@@ -43,21 +46,12 @@ public class MainActivity extends AppCompatActivity {
 //                break;
 //        }
         dao= StudentDAOFactory.getDAOInstance(this,dbtype);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        studentNames = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_list_item_1, studentNames);
         lv=findViewById(R.id.listView);
-        ArrayList<String> studentNames=new ArrayList<>();
-        for(student s:dao.getList())
-        {
-            studentNames.add(s.name);
-        }
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1,studentNames);
-            lv.setAdapter(adapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent it=new Intent(MainActivity.this,Main3Activity.class);
@@ -66,6 +60,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshData();
+    }
+    public void refreshData()
+    {
+        studentNames.clear();
+        for (student s : dao.getList())
+        {
+            studentNames.add(s.name);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu2,menu);

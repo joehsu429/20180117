@@ -19,7 +19,20 @@ public class StudentDAOFactory {
 //    }
 
     //af4-2
-    public static StudentDAO getDAOInstance(Context context, DBtype dbtype) {
+//    public static StudentDAO getDAOInstance(Context context, DBtype dbtype) //0122
+//    {
+//        switch (dbtype) {
+//            case Memory:
+//                return new StudentScoreDAO();
+//            case File:
+//                return new StudentFileDAO(context);
+//            case DB:
+//                return new StudentDAODBImpl(context);
+//        }
+//        return null;
+//    }
+    public static StudentDAO getDAOInstance(Context context, DBtype dbtype) //0123
+    {
         switch (dbtype) {
             case Memory:
                 return new StudentScoreDAO();
@@ -27,6 +40,8 @@ public class StudentDAOFactory {
                 return new StudentFileDAO(context);
             case DB:
                 return new StudentDAODBImpl(context);
+            case CLOUD:
+                return new StudentCloudDAO(context);
         }
         return null;
     }
